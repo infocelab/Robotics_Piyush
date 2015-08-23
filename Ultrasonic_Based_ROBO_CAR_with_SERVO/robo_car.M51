@@ -1,0 +1,661 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/08/2015  18:29:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+G:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE STARTUP.obj, robo_car.obj TO robo_car RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  robo_car.obj (ROBO_CAR)
+  G:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  G:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  G:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?IMUL)
+  G:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+  G:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?LLDIIDATA)
+
+
+LINK MAP OF MODULE:  robo_car (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0052H     UNIT         ?DT?ROBO_CAR
+            DATA    005AH     000EH     UNIT         _DATA_GROUP_
+            DATA    0068H     0004H     UNIT         ?DT?_DELAY_MOTOR?ROBO_CAR
+            DATA    006CH     0003H     UNIT         ?DT?_LCD8_DECIMAL2?ROBO_CAR
+            IDATA   006FH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0174H     UNIT         ?PR?MAIN?ROBO_CAR
+            CODE    0974H     00C8H     UNIT         ?PR?DISTANCE_MEASURE?ROBO_CAR
+            CODE    0A3CH     00B4H     UNIT         ?C?LIB_CODE
+            CODE    0AF0H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0B7CH     0056H     UNIT         ?PR?_LCD8_DECIMAL3?ROBO_CAR
+            CODE    0BD2H     0055H     UNIT         ?CO?ROBO_CAR
+            CODE    0C27H     004BH     UNIT         ?PR?CHECK_SERVO?ROBO_CAR
+            CODE    0C72H     003EH     UNIT         ?PR?_LCD8_DECIMAL2?ROBO_CAR
+            CODE    0CB0H     003CH     UNIT         ?PR?_LCD8_DISPLAY?ROBO_CAR
+            CODE    0CECH     002AH     UNIT         ?PR?_WAIT?ROBO_CAR
+            CODE    0D16H     0021H     UNIT         ?PR?_DELAY_MOTOR?ROBO_CAR
+            CODE    0D37H     001EH     UNIT         ?PR?_LCD8_WRITE?ROBO_CAR
+            CODE    0D55H     001BH     UNIT         ?PR?LEFT?ROBO_CAR
+            CODE    0D70H     001BH     UNIT         ?PR?RIGHT?ROBO_CAR
+            CODE    0D8BH     0018H     UNIT         ?PR?_LCD8_COMMAND?ROBO_CAR
+            CODE    0DA3H     0014H     UNIT         ?PR?LCD8_INIT?ROBO_CAR
+            CODE    0DB7H     0012H     UNIT         ?C_INITSEG
+            CODE    0DC9H     0010H     UNIT         ?PR?FORWARD?ROBO_CAR
+            CODE    0DD9H     0010H     UNIT         ?PR?BACKWARD?ROBO_CAR
+            CODE    0DE9H     000FH     UNIT         ?PR?STOP?ROBO_CAR
+            CODE    0DF8H     000EH     UNIT         ?PR?_SERVO_DELAY?ROBO_CAR
+            CODE    0E06H     000CH     UNIT         ?PR?SCAN_FRONT?ROBO_CAR
+            CODE    0E12H     000CH     UNIT         ?PR?SCAN_LEFT?ROBO_CAR
+            CODE    0E1EH     000CH     UNIT         ?PR?SCAN_RIGHT?ROBO_CAR
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 2
+
+
+            CODE    0E2AH     000BH     UNIT         ?PR?_DELAY_ULTRASONIC?ROBO_CAR
+
+
+
+OVERLAY MAP OF MODULE:   robo_car (?C_STARTUP)
+
+
+SEGMENT                                  DATA_GROUP 
+  +--> CALLED SEGMENT                  START    LENGTH
+------------------------------------------------------
+?C_C51STARTUP                          -----    -----
+  +--> ?PR?MAIN?ROBO_CAR
+  +--> ?C_INITSEG
+
+?PR?MAIN?ROBO_CAR                      005AH    0006H
+  +--> ?PR?LCD8_INIT?ROBO_CAR
+  +--> ?PR?_DELAY_ULTRASONIC?ROBO_CAR
+  +--> ?CO?ROBO_CAR
+  +--> ?PR?_LCD8_DISPLAY?ROBO_CAR
+  +--> ?PR?CHECK_SERVO?ROBO_CAR
+  +--> ?PR?DISTANCE_MEASURE?ROBO_CAR
+  +--> ?PR?FORWARD?ROBO_CAR
+  +--> ?PR?STOP?ROBO_CAR
+  +--> ?PR?SCAN_LEFT?ROBO_CAR
+  +--> ?PR?_WAIT?ROBO_CAR
+  +--> ?PR?SCAN_RIGHT?ROBO_CAR
+  +--> ?PR?SCAN_FRONT?ROBO_CAR
+  +--> ?PR?LEFT?ROBO_CAR
+  +--> ?PR?RIGHT?ROBO_CAR
+
+?PR?LCD8_INIT?ROBO_CAR                 -----    -----
+  +--> ?PR?_LCD8_COMMAND?ROBO_CAR
+
+?PR?_LCD8_COMMAND?ROBO_CAR             -----    -----
+  +--> ?PR?_DELAY_ULTRASONIC?ROBO_CAR
+
+?PR?_LCD8_DISPLAY?ROBO_CAR             0060H    0007H
+  +--> ?PR?_LCD8_WRITE?ROBO_CAR
+
+?PR?_LCD8_WRITE?ROBO_CAR               0067H    0001H
+  +--> ?PR?_LCD8_COMMAND?ROBO_CAR
+  +--> ?PR?_DELAY_ULTRASONIC?ROBO_CAR
+
+?PR?CHECK_SERVO?ROBO_CAR               -----    -----
+  +--> ?PR?SCAN_LEFT?ROBO_CAR
+  +--> ?PR?_WAIT?ROBO_CAR
+  +--> ?PR?SCAN_RIGHT?ROBO_CAR
+  +--> ?PR?SCAN_FRONT?ROBO_CAR
+
+?PR?SCAN_LEFT?ROBO_CAR                 -----    -----
+  +--> ?PR?_SERVO_DELAY?ROBO_CAR
+
+?PR?SCAN_RIGHT?ROBO_CAR                -----    -----
+  +--> ?PR?_SERVO_DELAY?ROBO_CAR
+
+?PR?SCAN_FRONT?ROBO_CAR                -----    -----
+  +--> ?PR?_SERVO_DELAY?ROBO_CAR
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 3
+
+
+
+?PR?DISTANCE_MEASURE?ROBO_CAR          -----    -----
+  +--> ?PR?_DELAY_ULTRASONIC?ROBO_CAR
+  +--> ?PR?_LCD8_DECIMAL3?ROBO_CAR
+
+?PR?_LCD8_DECIMAL3?ROBO_CAR            0060H    0007H
+  +--> ?PR?_LCD8_WRITE?ROBO_CAR
+
+?PR?FORWARD?ROBO_CAR                   -----    -----
+  +--> ?CO?ROBO_CAR
+  +--> ?PR?_LCD8_DISPLAY?ROBO_CAR
+
+?PR?STOP?ROBO_CAR                      -----    -----
+  +--> ?PR?_WAIT?ROBO_CAR
+
+?PR?LEFT?ROBO_CAR                      -----    -----
+  +--> ?CO?ROBO_CAR
+  +--> ?PR?_LCD8_DISPLAY?ROBO_CAR
+  +--> ?PR?_LCD8_DECIMAL3?ROBO_CAR
+  +--> ?PR?DISTANCE_MEASURE?ROBO_CAR
+
+?PR?RIGHT?ROBO_CAR                     -----    -----
+  +--> ?CO?ROBO_CAR
+  +--> ?PR?_LCD8_DISPLAY?ROBO_CAR
+  +--> ?PR?_LCD8_DECIMAL3?ROBO_CAR
+  +--> ?PR?DISTANCE_MEASURE?ROBO_CAR
+
+
+
+SYMBOL TABLE OF MODULE:  robo_car (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0AF0H         SEGMENT       ?C_C51STARTUP
+  I:006FH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0AF3H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0AF0H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 4
+
+
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0AF0H         LINE#         133
+  C:0AF2H         LINE#         134
+  C:0AF3H         LINE#         135
+  C:0AF4H         LINE#         136
+  C:0AF6H         LINE#         185
+  C:0AF9H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        ROBO_CAR
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0CBAH         PUBLIC        _Lcd8_Display
+  D:00A8H         PUBLIC        IE
+  C:0C72H         PUBLIC        _Lcd8_Decimal2
+  C:0C27H         PUBLIC        check_servo
+  C:0B7CH         PUBLIC        _Lcd8_Decimal3
+  D:00B8H         PUBLIC        IP
+  C:0D70H         PUBLIC        right
+  B:00B0H.4       PUBLIC        echo
+  D:0008H         PUBLIC        result
+  C:0800H         PUBLIC        main
+  C:0D16H         PUBLIC        _delay_motor
+  C:0974H         PUBLIC        distance_measure
+  C:0E1EH         PUBLIC        scan_right
+  D:000AH         PUBLIC        count
+  C:0D55H         PUBLIC        left
+  C:0E06H         PUBLIC        scan_front
+  D:0098H         PUBLIC        SCON
+  C:0E12H         PUBLIC        scan_left
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0CF0H         PUBLIC        _wait
+  B:00B0H.5       PUBLIC        trig
+  C:0D37H         PUBLIC        _Lcd8_Write
+  D:000CH         PUBLIC        sec
+  D:000DH         PUBLIC        rept
+  C:0E2AH         PUBLIC        _delay_ultrasonic
+  C:0DA3H         PUBLIC        Lcd8_Init
+  C:0DD9H         PUBLIC        backward
+  C:0DE9H         PUBLIC        stop
+  B:0080H.1       PUBLIC        Lcd_en
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:000EH         PUBLIC        kc
+  B:00B0H.3       PUBLIC        lb
+  D:008AH         PUBLIC        TL0
+  D:000FH         PUBLIC        num
+  B:00B0H.2       PUBLIC        lf
+  B:00B0H.1       PUBLIC        rb
+  D:0023H         PUBLIC        inch1
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 5
+
+
+  D:0025H         PUBLIC        inch2
+  B:0088H.4       PUBLIC        TR0
+  D:0027H         PUBLIC        cu
+  B:00B0H.0       PUBLIC        rf
+  B:0080H.0       PUBLIC        Lcd_rs
+  D:0028H         PUBLIC        count1
+  B:00B0H.7       PUBLIC        motor_pin
+  B:0080H.2       PUBLIC        Lcd_rw
+  D:002AH         PUBLIC        a
+  D:002BH         PUBLIC        c
+  D:002CH         PUBLIC        e
+  C:0DF8H         PUBLIC        _Servo_Delay
+  D:00C8H         PUBLIC        T2CON
+  D:0040H         PUBLIC        i
+  D:0041H         PUBLIC        j
+  D:0042H         PUBLIC        l
+  D:0043H         PUBLIC        obj_distance
+  D:0045H         PUBLIC        n
+  C:0D8BH         PUBLIC        _Lcd8_Command
+  D:0046H         PUBLIC        v
+  C:0DC9H         PUBLIC        forward
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:005AH         SYMBOL        left_distance
+  D:005CH         SYMBOL        right_distance
+  D:005EH         SYMBOL        i
+  -------         ENDDO         
+  C:0800H         LINE#         56
+  C:0800H         LINE#         57
+  C:0800H         LINE#         58
+  C:0809H         LINE#         60
+  C:080BH         LINE#         61
+  C:080DH         LINE#         62
+  C:080FH         LINE#         63
+  C:0811H         LINE#         64
+  C:0814H         LINE#         65
+  C:0818H         LINE#         66
+  C:081AH         LINE#         67
+  C:081DH         LINE#         68
+  C:0824H         LINE#         69
+  C:0835H         LINE#         70
+  C:0838H         LINE#         72
+  C:0838H         LINE#         73
+  C:0838H         LINE#         74
+  C:083BH         LINE#         75
+  C:0846H         LINE#         76
+  C:0846H         LINE#         77
+  C:0849H         LINE#         78
+  C:084BH         LINE#         80
+  C:084BH         LINE#         81
+  C:084EH         LINE#         82
+  C:0853H         LINE#         83
+  C:0853H         LINE#         84
+  C:0856H         LINE#         85
+  C:0859H         LINE#         86
+  C:086CH         LINE#         87
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 6
+
+
+  C:086FH         LINE#         88
+  C:0876H         LINE#         89
+  C:087CH         LINE#         90
+  C:0881H         LINE#         91
+  C:0881H         LINE#         92
+  C:0884H         LINE#         93
+  C:0887H         LINE#         94
+  C:089AH         LINE#         95
+  C:089DH         LINE#         96
+  C:08A4H         LINE#         97
+  C:08AAH         LINE#         98
+  C:08AFH         LINE#         99
+  C:08AFH         LINE#         100
+  C:08B2H         LINE#         101
+  C:08B5H         LINE#         102
+  C:08C8H         LINE#         104
+  C:08E1H         LINE#         105
+  C:08E1H         LINE#         106
+  C:08E3H         LINE#         107
+  C:08F1H         LINE#         108
+  C:08F1H         LINE#         109
+  C:08F4H         LINE#         110
+  C:08F6H         LINE#         111
+  C:08F6H         LINE#         112
+  C:090FH         LINE#         113
+  C:090FH         LINE#         114
+  C:0911H         LINE#         115
+  C:091FH         LINE#         116
+  C:091FH         LINE#         117
+  C:0922H         LINE#         118
+  C:0924H         LINE#         119
+  C:0924H         LINE#         120
+  C:0935H         LINE#         121
+  C:0935H         LINE#         122
+  C:0937H         LINE#         123
+  C:0945H         LINE#         124
+  C:0945H         LINE#         125
+  C:0948H         LINE#         126
+  C:094AH         LINE#         127
+  C:094AH         LINE#         128
+  C:095EH         LINE#         129
+  C:095EH         LINE#         130
+  C:0961H         LINE#         131
+  C:096FH         LINE#         132
+  C:096FH         LINE#         133
+  C:0972H         LINE#         134
+  -------         ENDPROC       MAIN
+  -------         PROC          SCAN_FRONT
+  C:0E06H         LINE#         143
+  C:0E06H         LINE#         144
+  C:0E06H         LINE#         145
+  C:0E08H         LINE#         146
+  C:0E0FH         LINE#         147
+  C:0E11H         LINE#         148
+  -------         ENDPROC       SCAN_FRONT
+  -------         PROC          SCAN_LEFT
+  C:0E12H         LINE#         151
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 7
+
+
+  C:0E12H         LINE#         152
+  C:0E12H         LINE#         153
+  C:0E14H         LINE#         154
+  C:0E1BH         LINE#         155
+  C:0E1DH         LINE#         156
+  -------         ENDPROC       SCAN_LEFT
+  -------         PROC          SCAN_RIGHT
+  C:0E1EH         LINE#         159
+  C:0E1EH         LINE#         160
+  C:0E1EH         LINE#         161
+  C:0E20H         LINE#         162
+  C:0E27H         LINE#         163
+  C:0E29H         LINE#         164
+  -------         ENDPROC       SCAN_RIGHT
+  -------         PROC          STOP
+  C:0DE9H         LINE#         167
+  C:0DE9H         LINE#         168
+  C:0DE9H         LINE#         170
+  C:0DEBH         LINE#         171
+  C:0DEDH         LINE#         172
+  C:0DEFH         LINE#         173
+  C:0DF1H         LINE#         174
+  -------         ENDPROC       STOP
+  -------         PROC          FORWARD
+  C:0DC9H         LINE#         178
+  C:0DC9H         LINE#         179
+  C:0DC9H         LINE#         180
+  C:0DD0H         LINE#         181
+  C:0DD2H         LINE#         182
+  C:0DD4H         LINE#         183
+  C:0DD6H         LINE#         184
+  C:0DD8H         LINE#         185
+  -------         ENDPROC       FORWARD
+  -------         PROC          BACKWARD
+  C:0DD9H         LINE#         188
+  C:0DD9H         LINE#         189
+  C:0DD9H         LINE#         190
+  C:0DE0H         LINE#         191
+  C:0DE2H         LINE#         192
+  C:0DE4H         LINE#         193
+  C:0DE6H         LINE#         194
+  C:0DE8H         LINE#         195
+  -------         ENDPROC       BACKWARD
+  -------         PROC          LEFT
+  C:0D55H         LINE#         198
+  C:0D55H         LINE#         199
+  C:0D55H         LINE#         200
+  C:0D5EH         LINE#         201
+  C:0D65H         LINE#         202
+  C:0D67H         LINE#         203
+  C:0D69H         LINE#         204
+  C:0D6BH         LINE#         205
+  C:0D6DH         LINE#         206
+  -------         ENDPROC       LEFT
+  -------         PROC          RIGHT
+  C:0D70H         LINE#         211
+  C:0D70H         LINE#         212
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 8
+
+
+  C:0D70H         LINE#         213
+  C:0D79H         LINE#         214
+  C:0D80H         LINE#         215
+  C:0D82H         LINE#         216
+  C:0D84H         LINE#         217
+  C:0D86H         LINE#         218
+  C:0D88H         LINE#         219
+  -------         ENDPROC       RIGHT
+  -------         PROC          DISTANCE_MEASURE
+  C:0974H         LINE#         224
+  C:0974H         LINE#         225
+  C:0974H         LINE#         226
+  C:097DH         LINE#         227
+  C:0981H         LINE#         228
+  C:0983H         LINE#         229
+  C:0985H         LINE#         230
+  C:0985H         LINE#         231
+  C:0987H         LINE#         232
+  C:098EH         LINE#         233
+  C:0990H         LINE#         234
+  C:0997H         LINE#         235
+  C:0999H         LINE#         236
+  C:099CH         LINE#         237
+  C:099EH         LINE#         238
+  C:09A1H         LINE#         239
+  C:09A3H         LINE#         240
+  C:09ABH         LINE#         241
+  C:09B1H         LINE#         242
+  C:09B5H         LINE#         243
+  C:09C1H         LINE#         244
+  C:09C8H         LINE#         245
+  C:09D1H         LINE#         246
+  C:09E0H         LINE#         247
+  C:09F8H         LINE#         248
+  C:0A14H         LINE#         249
+  C:0A29H         LINE#         251
+  C:0A35H         LINE#         252
+  -------         ENDPROC       DISTANCE_MEASURE
+  -------         PROC          LCD8_INIT
+  C:0DA3H         LINE#         255
+  C:0DA3H         LINE#         256
+  C:0DA3H         LINE#         257
+  C:0DA8H         LINE#         258
+  C:0DADH         LINE#         259
+  C:0DB2H         LINE#         260
+  -------         ENDPROC       LCD8_INIT
+  -------         PROC          _LCD8_COMMAND
+  D:0007H         SYMBOL        com
+  C:0D8BH         LINE#         263
+  C:0D8BH         LINE#         264
+  C:0D8BH         LINE#         265
+  C:0D8DH         LINE#         266
+  C:0D8FH         LINE#         267
+  C:0D93H         LINE#         268
+  C:0D9AH         LINE#         269
+  C:0D9CH         LINE#         270
+  -------         ENDPROC       _LCD8_COMMAND
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 9
+
+
+  -------         PROC          _LCD8_WRITE
+  D:0007H         SYMBOL        com
+  D:0067H         SYMBOL        lr
+  C:0D37H         LINE#         273
+  C:0D39H         LINE#         274
+  C:0D39H         LINE#         275
+  C:0D3CH         LINE#         277
+  C:0D3FH         LINE#         278
+  C:0D43H         LINE#         279
+  C:0D45H         LINE#         280
+  C:0D4CH         LINE#         281
+  C:0D4EH         LINE#         282
+  -------         ENDPROC       _LCD8_WRITE
+  C:0CB2H         SYMBOL        L?0092
+  -------         PROC          L?0091
+  -------         ENDPROC       L?0091
+  C:0CB2H         SYMBOL        L?0092
+  -------         PROC          _LCD8_DISPLAY
+  D:0060H         SYMBOL        com
+  D:0061H         SYMBOL        word
+  D:0064H         SYMBOL        n
+  -------         DO            
+  D:0066H         SYMBOL        Lcd_i
+  -------         ENDDO         
+  C:0CBAH         LINE#         285
+  C:0CC2H         LINE#         286
+  C:0CC2H         LINE#         289
+  C:0CCFH         LINE#         290
+  C:0CCFH         LINE#         291
+  C:0CE7H         LINE#         292
+  C:0CEBH         LINE#         293
+  -------         ENDPROC       _LCD8_DISPLAY
+  -------         PROC          _LCD8_DECIMAL2
+  D:006CH         SYMBOL        com
+  D:0005H         SYMBOL        val
+  -------         DO            
+  D:0002H         SYMBOL        Lcd_hr
+  D:0082H         SYMBOL        Lcd_t
+  D:006DH         SYMBOL        Lcd_o
+  -------         ENDDO         
+  C:0C72H         LINE#         295
+  C:0C74H         LINE#         296
+  C:0C74H         LINE#         299
+  C:0C7DH         LINE#         300
+  C:0C8AH         LINE#         301
+  C:0C99H         LINE#         303
+  C:0CA4H         LINE#         304
+  -------         ENDPROC       _LCD8_DECIMAL2
+  -------         PROC          _LCD8_DECIMAL3
+  D:0060H         SYMBOL        com
+  D:0005H         SYMBOL        val
+  -------         DO            
+  D:0061H         SYMBOL        Lcd_h
+  D:0002H         SYMBOL        Lcd_hr
+  D:0063H         SYMBOL        Lcd_t
+  D:0065H         SYMBOL        Lcd_o
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 10
+
+
+  C:0B7CH         LINE#         308
+  C:0B7EH         LINE#         309
+  C:0B7EH         LINE#         312
+  C:0B88H         LINE#         313
+  C:0B91H         LINE#         314
+  C:0BA0H         LINE#         315
+  C:0BAFH         LINE#         317
+  C:0BB9H         LINE#         318
+  C:0BC5H         LINE#         319
+  -------         ENDPROC       _LCD8_DECIMAL3
+  -------         PROC          CHECK_SERVO
+  C:0C27H         LINE#         322
+  C:0C27H         LINE#         323
+  C:0C27H         LINE#         324
+  C:0C2AH         LINE#         325
+  C:0C2AH         LINE#         326
+  C:0C2DH         LINE#         327
+  C:0C30H         LINE#         328
+  C:0C39H         LINE#         329
+  C:0C40H         LINE#         330
+  C:0C43H         LINE#         331
+  C:0C43H         LINE#         332
+  C:0C46H         LINE#         333
+  C:0C49H         LINE#         334
+  C:0C52H         LINE#         335
+  C:0C59H         LINE#         336
+  C:0C5CH         LINE#         337
+  C:0C5CH         LINE#         338
+  C:0C5FH         LINE#         339
+  C:0C62H         LINE#         340
+  C:0C6BH         LINE#         341
+  -------         ENDPROC       CHECK_SERVO
+  -------         PROC          _DELAY_ULTRASONIC
+  D:0006H         SYMBOL        del
+  C:0E2AH         LINE#         344
+  C:0E2AH         LINE#         345
+  C:0E2AH         LINE#         346
+  C:0E34H         LINE#         347
+  -------         ENDPROC       _DELAY_ULTRASONIC
+  -------         PROC          _DELAY_MOTOR
+  D:0006H         SYMBOL        ms
+  -------         DO            
+  D:0068H         SYMBOL        us
+  -------         ENDDO         
+  C:0D16H         LINE#         349
+  C:0D16H         LINE#         350
+  C:0D16H         LINE#         351
+  C:0D26H         LINE#         352
+  C:0D33H         LINE#         353
+  C:0D33H         LINE#         354
+  C:0D34H         LINE#         355
+  C:0D36H         LINE#         356
+  -------         ENDPROC       _DELAY_MOTOR
+  -------         PROC          _SERVO_DELAY
+  D:0006H         SYMBOL        us
+  C:0DF8H         LINE#         358
+  C:0DF8H         LINE#         359
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/08/2015  18:29:24  PAGE 11
+
+
+  C:0DF8H         LINE#         360
+  C:0E02H         LINE#         361
+  C:0E02H         LINE#         362
+  C:0E03H         LINE#         363
+  C:0E05H         LINE#         364
+  -------         ENDPROC       _SERVO_DELAY
+  C:0CECH         SYMBOL        L?0094
+  -------         PROC          L?0093
+  -------         ENDPROC       L?0093
+  C:0CECH         SYMBOL        L?0094
+  -------         PROC          _WAIT
+  D:0006H         SYMBOL        x
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:0CF0H         LINE#         366
+  C:0CF0H         LINE#         367
+  C:0CF0H         LINE#         369
+  C:0D00H         LINE#         370
+  C:0D15H         LINE#         371
+  -------         ENDPROC       _WAIT
+  -------         ENDMOD        ROBO_CAR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:0A3CH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?IMUL
+  C:0A69H         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+  -------         MODULE        ?C?UIDIV
+  C:0A7BH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+  -------         MODULE        ?C?LLDIIDATA
+  C:0AD9H         PUBLIC        ?C?LLDIIDATA
+  C:0AD0H         PUBLIC        ?C?LLDIIDATA1
+  C:0AD2H         PUBLIC        ?C?LLDIIDATA8
+  -------         ENDMOD        ?C?LLDIIDATA
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BACKWARD?ROBO_CAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD8_DECIMAL2?ROBO_CAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_MOTOR?ROBO_CAR
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0503H BYTE (62%) *
+******************************************************************************
+
+Program Size: data=112.0 xdata=0 code=1592
+LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)

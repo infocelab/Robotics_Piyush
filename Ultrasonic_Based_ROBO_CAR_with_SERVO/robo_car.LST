@@ -1,0 +1,406 @@
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE ROBO_CAR
+OBJECT MODULE PLACED IN robo_car.OBJ
+COMPILER INVOKED BY: G:\Program Files\Keil\C51\BIN\C51.EXE robo_car.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /************************* HEADER FILES ************************/
+   2          #include<reg52.h>
+   3          #include <intrins.h>
+   4          
+   5          /*********************** SBIT DECLARATIONS *********************/
+   6          sbit Lcd_rs = P0^0;
+   7          sbit Lcd_rw = P0^2;
+   8          sbit Lcd_en = P0^1;
+   9          sbit rf=P3^0;
+  10          sbit rb=P3^1;
+  11          sbit lf=P3^2;
+  12          sbit lb=P3^3;
+  13          sbit echo= P3^4; 
+  14          sbit trig= P3^5;
+  15          sbit motor_pin = P3^7;
+  16          
+  17          /************************* #DEFINITIONS ************************/
+  18          #define First_Line 0x80
+  19          #define Second_Line 0xc0
+  20          #define Curser_On  0x0f
+  21          #define Curser_Off 0x0c
+  22          #define Clear_Display 0x01
+  23          #define Data_Port P2
+  24          #define DELAY 2000
+  25          #define D 10
+  26          
+  27          /*********************** FUNCTION PROTOTYPES *********************/ 
+  28          void distance_measure();
+  29          void Lcd8_Init();
+  30          void Lcd8_Command(unsigned char);
+  31          void Lcd8_Write(unsigned char,unsigned char);
+  32          void Lcd8_Display(unsigned char,const unsigned char*,unsigned int);
+  33          void Lcd8_Decimal2(unsigned char,unsigned char);
+  34          void Lcd8_Decimal3(unsigned char,unsigned char);
+  35          void Lcd8_Decimal4(unsigned char,unsigned int);
+  36          void delay_ultrasonic(unsigned int);
+  37          void del();  
+  38          void delay_motor(unsigned int);
+  39          void Servo_Delay(unsigned int);
+  40          void scan_front();
+  41          void scan_left();
+  42          void scan_right();
+  43          void stop();
+  44          void forward();
+  45          void backward();
+  46          void left();
+  47          void right();
+  48          void wait(int);
+  49          void check_servo();
+  50          
+  51          /************************* GLOBAL VARIABLES ************************/
+  52          unsigned char i,rept,sec,j,a=0,c=0,kc,cu=0xc0,l,e[20],num[20],n,v[20];
+  53          unsigned int count=0,count1=0,obj_distance,inch1,inch2,result;
+  54          
+  55          /************************* MAIN FUNCTION ************************/
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 2   
+
+  56          void main()
+  57          {
+  58   1        int left_distance=0,right_distance=0;
+  59   1        int i;
+  60   1        motor_pin = 0;
+  61   1        P3=0x00;
+  62   1        EA=1;
+  63   1        ET0=1;
+  64   1        TMOD=0x01;
+  65   1        TH0=TL0=0x00;
+  66   1        TR0=1;
+  67   1        Lcd8_Init();
+  68   1        delay_ultrasonic(65000); 
+  69   1        Lcd8_Display(0xC0,"Distance:       ",16);
+  70   1        check_servo();
+  71   1          
+  72   1        while(1)
+  73   1        {
+  74   2          distance_measure();
+  75   2          if(obj_distance > D)
+  76   2          {
+  77   3            forward();
+  78   3          }
+  79   2          else
+  80   2          {
+  81   3            stop();     
+  82   3            for(i=0;i<100;i++)    // scan left area
+  83   3            {
+  84   4              scan_left();
+  85   4              wait(1);
+  86   4            }     
+  87   3            distance_measure();
+  88   3            wait(200);
+  89   3            left_distance=obj_distance;
+  90   3            for(i=0;i<100;i++)      // scan right area
+  91   3            {
+  92   4              scan_right();
+  93   4              wait(1);
+  94   4            }
+  95   3            distance_measure();
+  96   3            wait(200);
+  97   3            right_distance=obj_distance;
+  98   3            for(i=0;i<100;i++)
+  99   3            {
+ 100   4              scan_front();
+ 101   4              wait(1);
+ 102   4            }
+ 103   3            //wait(100);
+ 104   3            if(left_distance > D && right_distance < D)
+ 105   3            {
+ 106   4              left();
+ 107   4              while(obj_distance < D)
+ 108   4              {
+ 109   5                left();
+ 110   5              }
+ 111   4            }
+ 112   3            else if(left_distance < D && right_distance > D)
+ 113   3            {
+ 114   4              right();
+ 115   4              while(obj_distance < D)
+ 116   4              {
+ 117   5                right();
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 3   
+
+ 118   5              }
+ 119   4            }
+ 120   3            else if(left_distance > right_distance)
+ 121   3            { 
+ 122   4              left();
+ 123   4              while(obj_distance < D)
+ 124   4              {
+ 125   5                left();
+ 126   5              }
+ 127   4            }
+ 128   3            else if(left_distance < right_distance)
+ 129   3            {
+ 130   4              right();
+ 131   4              while(obj_distance < D)
+ 132   4              {
+ 133   5                right();
+ 134   5              }
+ 135   4            }     
+ 136   3          }
+ 137   2        }
+ 138   1      }
+ 139          /*************************** END OF MAIN ***************************/
+ 140          
+ 141          /*********************** FUNCTION DEFINITIONS **********************/
+ 142          // to scan the front area
+ 143          void scan_front()
+ 144          {
+ 145   1          motor_pin = 1;
+ 146   1          Servo_Delay(110);
+ 147   1          motor_pin = 0;
+ 148   1      }
+ 149          
+ 150          // to scan the left area
+ 151          void scan_left()
+ 152          {
+ 153   1          motor_pin = 1;
+ 154   1          Servo_Delay(180);
+ 155   1          motor_pin = 0;
+ 156   1      }
+ 157          
+ 158          // to scan the right area
+ 159          void scan_right()
+ 160          {
+ 161   1          motor_pin = 1;
+ 162   1          Servo_Delay(50);
+ 163   1          motor_pin = 0;
+ 164   1      }
+ 165          
+ 166          // to stop all wheels:
+ 167          void stop()
+ 168          {
+ 169   1        //Lcd8_Display(0x80,"...DEAD  END!...",16);
+ 170   1        lf=0;
+ 171   1        rf=0;
+ 172   1        lb=0;
+ 173   1        rb=0;
+ 174   1        wait(500);
+ 175   1      }
+ 176          
+ 177          // to move forward:
+ 178          void forward()
+ 179          {
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 4   
+
+ 180   1        Lcd8_Display(0x80,".Moving Forward.",16);
+ 181   1        lf=1;
+ 182   1        rf=1;
+ 183   1        lb=0;
+ 184   1        rb=0;
+ 185   1      }
+ 186          
+ 187          // to move backwards:
+ 188          void backward()
+ 189          {
+ 190   1        Lcd8_Display(0x80,"Moving  Backward",16);
+ 191   1        lb=1;
+ 192   1        rb=1;
+ 193   1        lf=0;
+ 194   1        rf=0;
+ 195   1      }
+ 196          
+ 197          // to move left
+ 198          void left()
+ 199          {
+ 200   1        Lcd8_Display(0x80,"..Moving  Left..",16);
+ 201   1        Lcd8_Decimal3(0XCb,obj_distance);
+ 202   1        lf=0;
+ 203   1        rf=1;
+ 204   1        lb=0;
+ 205   1        rb=0;
+ 206   1        distance_measure();
+ 207   1        //delay_motor(10);
+ 208   1      }
+ 209          
+ 210          // to move left
+ 211          void right()
+ 212          {
+ 213   1        Lcd8_Display(0x80,"..Moving Right..",16);
+ 214   1        Lcd8_Decimal3(0XCb,obj_distance);
+ 215   1        lf=1;
+ 216   1        rf=0;
+ 217   1        lb=0;
+ 218   1        rb=0;
+ 219   1        distance_measure();
+ 220   1        //delay_motor(10);
+ 221   1      }
+ 222          
+ 223          // to calculate the distance of object
+ 224          void distance_measure()
+ 225          {
+ 226   1        count=count1=0;
+ 227   1        TH0=0x00;TL0=0x00; 
+ 228   1        TR0=0;
+ 229   1        for(i=0;i<10;i++)         
+ 230   1        {
+ 231   2          trig=0;           
+ 232   2          delay_ultrasonic(1000);
+ 233   2          trig=1;           
+ 234   2          delay_ultrasonic(10);
+ 235   2          trig=0;   
+ 236   2          while(echo==0);
+ 237   2          TR0=1; 
+ 238   2          while(echo==1);
+ 239   2          TR0=0;
+ 240   2          count=TH0<<8;      
+ 241   2          count=count|TL0;    
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 5   
+
+ 242   2          TH0=TL0=0x00; 
+ 243   2          count1=count1+count;
+ 244   2          delay_ultrasonic(500);        
+ 245   2        }
+ 246   1        count=count1/10;
+ 247   1        inch1=count%10000/1000;
+ 248   1        inch2=count%1000/100;
+ 249   1        result=(inch1*10)+inch2;
+ 250   1         
+ 251   1        obj_distance=result-2;  
+ 252   1        Lcd8_Decimal3(0XCb,obj_distance); 
+ 253   1      }
+ 254          
+ 255          void Lcd8_Init()
+ 256          {
+ 257   1        Lcd8_Command(0x38); //to select function set
+ 258   1        Lcd8_Command(0x06); //entry mode set
+ 259   1        Lcd8_Command(0x0c); //display on
+ 260   1        Lcd8_Command(0x01); //clear display
+ 261   1      }
+ 262           
+ 263          void Lcd8_Command(unsigned char com)
+ 264          {
+ 265   1        Data_Port=com;
+ 266   1        Lcd_en=1;
+ 267   1        Lcd_rs=Lcd_rw=0;
+ 268   1        delay_ultrasonic(125);
+ 269   1        Lcd_en=0;
+ 270   1        delay_ultrasonic(125);
+ 271   1      }
+ 272           
+ 273          void Lcd8_Write(unsigned char com,unsigned char lr)
+ 274          {
+ 275   1        Lcd8_Command(com);
+ 276   1         
+ 277   1        Data_Port=lr; // Data 
+ 278   1        Lcd_en=Lcd_rs=1;
+ 279   1        Lcd_rw=0;
+ 280   1        delay_ultrasonic(125);
+ 281   1        Lcd_en=0;
+ 282   1        delay_ultrasonic(125);
+ 283   1      }
+ 284           
+ 285          void Lcd8_Display(unsigned char com,const unsigned char *word,unsigned int n)
+ 286          {
+ 287   1        unsigned char Lcd_i;
+ 288   1         
+ 289   1        for(Lcd_i=0;Lcd_i<n;Lcd_i++)
+ 290   1        { 
+ 291   2        Lcd8_Write(com+Lcd_i,word[Lcd_i]);
+ 292   2          }
+ 293   1      }
+ 294           
+ 295          void Lcd8_Decimal2(unsigned char com,unsigned char val)
+ 296          {
+ 297   1        unsigned int Lcd_hr,Lcd_t,Lcd_o;
+ 298   1         
+ 299   1        Lcd_hr=val%100;
+ 300   1        Lcd_t=Lcd_hr/10;
+ 301   1        Lcd_o=Lcd_hr%10;
+ 302   1         
+ 303   1        Lcd8_Write(com,Lcd_t+0x30);
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 6   
+
+ 304   1        Lcd8_Write(com+1,Lcd_o+0x30);
+ 305   1      }
+ 306           
+ 307           
+ 308          void Lcd8_Decimal3(unsigned char com,unsigned char val)
+ 309          {
+ 310   1        unsigned int Lcd_h,Lcd_hr,Lcd_t,Lcd_o;
+ 311   1         
+ 312   1        Lcd_h=val/100;
+ 313   1        Lcd_hr=val%100;
+ 314   1        Lcd_t=Lcd_hr/10;
+ 315   1        Lcd_o=Lcd_hr%10;
+ 316   1         
+ 317   1        Lcd8_Write(com,Lcd_h+0x30);
+ 318   1        Lcd8_Write(com+1,Lcd_t+0x30);
+ 319   1        Lcd8_Write(com+2,Lcd_o+0x30);
+ 320   1      }
+ 321          
+ 322          void check_servo()
+ 323          {
+ 324   1        for(i=0;i<100;i++)
+ 325   1        {
+ 326   2          scan_left();
+ 327   2          wait(1);
+ 328   2        }
+ 329   1        wait(500);
+ 330   1        for(i=0;i<100;i++)
+ 331   1        {
+ 332   2          scan_right();
+ 333   2          wait(1);
+ 334   2        }
+ 335   1        wait(500);
+ 336   1        for(i=0;i<100;i++)
+ 337   1        {
+ 338   2          scan_front();
+ 339   2          wait(1);
+ 340   2        }
+ 341   1        wait(500);
+ 342   1      }
+ 343          
+ 344          void delay_ultrasonic(unsigned int del)
+ 345          {
+ 346   1        while(del--);
+ 347   1      }
+ 348          
+ 349          void delay_motor(unsigned int ms)
+ 350          {
+ 351   1        unsigned long int us = ms*1000;
+ 352   1        while(us--)
+ 353   1        {
+ 354   2          _nop_();
+ 355   2        }
+ 356   1      }
+ 357          
+ 358          void Servo_Delay(unsigned int us)
+ 359          {
+ 360   1        while(us--)
+ 361   1        {
+ 362   2          _nop_();
+ 363   2        }
+ 364   1      }
+ 365          
+C51 COMPILER V9.52.0.0   ROBO_CAR                                                          08/08/2015 18:29:24 PAGE 7   
+
+ 366          void wait(int x)
+ 367          {
+ 368   1        int i,j;
+ 369   1        for(i=0;i<x;i++)
+ 370   1          for(j=0;j<275;j++);
+ 371   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1166    ----
+   CONSTANT SIZE    =     85    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     82      28
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
