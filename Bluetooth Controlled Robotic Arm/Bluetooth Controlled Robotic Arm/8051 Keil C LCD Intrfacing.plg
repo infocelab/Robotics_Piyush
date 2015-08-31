@@ -1,0 +1,39 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\deepak\robotic_arm_using_bluetooth\8051 Keil C LCD Intrfacing.uvproj
+Project File Date:  06/05/2015
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling 4.c...
+4.c(56): warning C206: 'Lcd8_init': missing function-prototype
+4.c(41): warning C280: 'str': unreferenced local variable
+4.c(42): warning C280: 'a': unreferenced local variable
+4.c(84): warning C290: missing return value
+4.c(176): warning C290: missing return value
+4.c(124): warning C294: unreachable code
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD8_SHIFT_RIGHT?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD8_SHIFT_LEFT?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD4_CLEAR?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD4_SET_CURSOR?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD4_INIT?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD4_WRITE_STRING?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD4_SHIFT_RIGHT?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD4_SHIFT_LEFT?4
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?4
+Program Size: data=47.0 xdata=0 code=1224
+creating hex file from "8051 Keil C LCD Intrfacing"...
+"8051 Keil C LCD Intrfacing" - 0 Error(s), 15 Warning(s).

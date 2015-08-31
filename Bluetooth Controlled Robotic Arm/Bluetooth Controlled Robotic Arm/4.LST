@@ -1,0 +1,226 @@
+C51 COMPILER V9.52.0.0   4                                                                 08/27/2015 18:09:08 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE 4
+OBJECT MODULE PLACED IN 4.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 4.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg52.h>              //including sfr registers for ports of the controller
+   2          #include<lcd.h>
+   3          #include <stdio.h>  
+   4          
+   5          //LCD Module Connections
+   6          sbit RS = P0^0;                                                                   
+   7          sbit EN = P0^1;                            
+   8          sbit D0 = P2^0;
+   9          sbit D1 = P2^1;
+  10          sbit D2 = P2^2;
+  11          sbit D3 = P2^3;
+  12          sbit D4 = P2^4;
+  13          sbit D5 = P2^5;
+  14          sbit D6 = P2^6;
+  15          sbit D7 = P2^7;                           
+  16          sbit p=P0^2;  //pick 
+  17          sbit d=P0^3;  //drop
+  18          sbit r=P3^2;  //left
+  19          sbit l=P3^3;  //right
+  20          sbit up=P3^6; //up
+  21          sbit down=P3^7; //down
+  22          
+  23          //Function Prototypes
+  24          void pick();
+  25          void drop();
+  26          void move_up();
+  27          void move_down();
+  28          void stop();
+  29          void left();
+  30          void right();
+  31          void delay(int);
+  32          void set_intr();
+  33          
+  34          //Global variables
+  35          unsigned char c='x';
+  36          
+  37          //Begin main function
+  38          void main()
+  39          {
+  40   1        int i=0;
+  41   1        char str[20];
+  42   1        char a;
+  43   1        //P0=0x00;
+  44   1        //P3=0x00;
+  45   1        
+  46   1        /*------------------------------------------------
+  47   1      Setup the serial port for 2400 baud at 11.0592MHz.
+  48   1      ------------------------------------------------*/
+  49   1        
+  50   1        TMOD=0x20;                                //Choosing Timer mode    
+  51   1        TH1=0xFD;                                   //Selecting Baud Rate    
+  52   1        SCON=0x50;                               //Serial mode selection    
+  53   1        TR1=1;    
+  54   1        IE=0x90; 
+  55   1        
+C51 COMPILER V9.52.0.0   4                                                                 08/27/2015 18:09:08 PAGE 2   
+
+  56   1        Lcd8_init();
+*** WARNING C206 IN LINE 56 OF 4.c: 'Lcd8_init': missing function-prototype
+  57   1        Lcd8_Set_Cursor(1,1);
+  58   1        Lcd8_Write_String("Bluetooth Controlled");
+  59   1        Lcd8_Set_Cursor(2,1);
+  60   1        Lcd8_Write_String("Robotic Arm");
+  61   1        
+  62   1        while(1)
+  63   1        {   
+  64   2          set_intr();
+  65   2          
+  66   2          switch(c)
+  67   2          {
+  68   3            case 'w':
+  69   3            {
+  70   4              Lcd8_Set_Cursor(2,1);
+  71   4              Lcd8_Write_String("Moving Up..");
+  72   4              move_up();
+  73   4              break;
+  74   4            }
+  75   3            case 'a':
+  76   3            {
+  77   4              Lcd8_Set_Cursor(2,1);
+  78   4              Lcd8_Write_String("Moving Left..");
+  79   4              left();
+  80   4              break;
+  81   4            }
+  82   3            case 's':
+  83   3            {
+  84   4              Lcd8_Set_Cursor(2,1);
+  85   4              Lcd8_Write_String("Moving Down..");
+  86   4              move_down();
+  87   4              break;
+  88   4            }
+  89   3            case 'd':
+  90   3            {
+  91   4              Lcd8_Set_Cursor(2,1);
+  92   4              Lcd8_Write_String("Moving Right..");
+  93   4              right();
+  94   4              break;
+  95   4            }
+  96   3            case 'p':
+  97   3            {
+  98   4              Lcd8_Set_Cursor(2,1);
+  99   4              Lcd8_Write_String("Picking Object..");
+ 100   4              pick();
+ 101   4              break;
+ 102   4            }
+ 103   3            case 'o':
+ 104   3            {
+ 105   4              Lcd8_Set_Cursor(2,1);
+ 106   4              Lcd8_Write_String("Drop..");
+ 107   4              drop();
+ 108   4              break;
+ 109   4            }
+ 110   3            case 'x':
+ 111   3            {
+ 112   4              Lcd8_Set_Cursor(2,1);
+ 113   4              Lcd8_Write_String("STOP!");
+ 114   4              stop();
+ 115   4              break;
+ 116   4            }
+C51 COMPILER V9.52.0.0   4                                                                 08/27/2015 18:09:08 PAGE 3   
+
+ 117   3            default:
+ 118   3            {
+ 119   4              Lcd8_Set_Cursor(2,1);
+ 120   4              Lcd8_Write_String("CMD NOT Found!");
+ 121   4            }       
+ 122   3          }
+ 123   2        }
+ 124   1        IE=0x90;
+ 125   1      }
+*** WARNING C280 IN LINE 41 OF 4.c: 'str': unreferenced local variable
+*** WARNING C280 IN LINE 42 OF 4.c: 'a': unreferenced local variable
+ 126          
+ 127          void set_intr(void) //interrupt 4        //Subroutine for Interrupt  
+ 128          {
+ 129   1        IE=0x00;
+ 130   1        while(RI==0);
+ 131   1        c=SBUF;
+ 132   1        RI=0;
+ 133   1        Lcd8_Clear();
+ 134   1        Lcd8_Set_Cursor(1,1);
+ 135   1        Lcd8_Write_Char(c);
+ 136   1        //IE=0x90;
+ 137   1      }
+ 138          
+ 139          void delay(int x)
+ 140          { 
+ 141   1        int i,j;
+ 142   1        for(i=0;i<x;i++)
+ 143   1          for(j=0;j<100;j++);
+ 144   1      }
+ 145          
+ 146          void stop()
+ 147          {
+ 148   1        p=0;
+ 149   1        d=0;
+ 150   1        l=0;
+ 151   1        r=0;
+ 152   1        up=0;
+ 153   1        down=0;
+ 154   1      }
+ 155          
+ 156          void pick()
+ 157          {
+ 158   1        p=1;
+ 159   1        d=0;
+ 160   1      }
+ 161          
+ 162          void drop()
+ 163          {
+ 164   1        p=0;
+ 165   1        d=1;
+ 166   1      }
+ 167          
+ 168          
+ 169          void move_up()
+ 170          {
+ 171   1        up=1;
+ 172   1        down=0;
+ 173   1      }
+ 174          
+ 175          void move_down()
+ 176          {
+C51 COMPILER V9.52.0.0   4                                                                 08/27/2015 18:09:08 PAGE 4   
+
+ 177   1        down=1;
+ 178   1        up=0;
+ 179   1      }
+ 180          
+ 181          void left()
+ 182          {
+ 183   1        l=1;
+ 184   1        r=0;
+ 185   1      }
+ 186          
+ 187          void right()
+ 188          {
+ 189   1        r=1;
+ 190   1        l=0;
+ 191   1      }
+*** WARNING C290 IN LINE 84 OF 4.c: missing return value
+*** WARNING C290 IN LINE 176 OF 4.c: missing return value
+*** WARNING C294 IN LINE 124 OF 4.c: unreachable code
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    899    ----
+   CONSTANT SIZE    =    133    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      38
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  6 WARNING(S),  0 ERROR(S)
